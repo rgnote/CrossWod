@@ -17,6 +17,7 @@ class User(Base):
     name = Column(String(100), nullable=False)
     profile_picture = Column(LargeBinary, nullable=True)  # Stored as BLOB
     profile_picture_mime = Column(String(50), nullable=True)
+    weight_unit = Column(String(10), default="kg")  # kg or lb
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     last_active = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
@@ -73,6 +74,7 @@ class WorkoutExercise(Base):
     workout_id = Column(Integer, ForeignKey("workouts.id"), nullable=False)
     exercise_id = Column(Integer, ForeignKey("exercises.id"), nullable=False)
     order = Column(Integer, nullable=False)
+    phase = Column(String(20), default="main")  # warmup, main, cooldown
     notes = Column(Text, nullable=True)
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
@@ -95,6 +97,7 @@ class WorkoutSet(Base):
     is_warmup = Column(Boolean, default=False)
     is_dropset = Column(Boolean, default=False)
     is_failure = Column(Boolean, default=False)
+    is_completed = Column(Boolean, default=False)  # Track if set is done
     rpe = Column(Float, nullable=True)  # Rate of Perceived Exertion (1-10)
     rest_seconds = Column(Integer, nullable=True)  # Rest after this set
     notes = Column(Text, nullable=True)

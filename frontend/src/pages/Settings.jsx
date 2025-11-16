@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
-import { Camera, LogOut, User as UserIcon, Scale, Plus } from 'lucide-react';
+import { Camera, LogOut, User as UserIcon, Scale, Settings as SettingsIcon } from 'lucide-react';
 import { useUser } from '../context/UserContext';
-import { uploadProfilePicture, getProfilePictureUrl, createBodyMetric } from '../utils/api';
+import { uploadProfilePicture, getProfilePictureUrl, createBodyMetric, updateUser } from '../utils/api';
 
 export default function Settings() {
   const { currentUser, logout, updateCurrentUser } = useUser();
@@ -9,7 +9,10 @@ export default function Settings() {
   const [showAddWeight, setShowAddWeight] = useState(false);
   const [newWeight, setNewWeight] = useState('');
   const [uploading, setUploading] = useState(false);
+  const [savingUnit, setSavingUnit] = useState(false);
   const fileInputRef = useRef(null);
+
+  const weightUnit = currentUser?.weight_unit || 'kg';
 
   const handleProfilePictureChange = async (e) => {
     const file = e.target.files?.[0];
@@ -47,6 +50,20 @@ export default function Settings() {
   const handleLogout = () => {
     if (navigator.vibrate) navigator.vibrate(10);
     logout();
+  };
+
+  const handleWeightUnitChange = async (unit) => {
+    if (unit === weightUnit) return;
+    setSavingUnit(true);
+    try {
+      await updateUser(currentUser.id, { weight_unit: unit });
+      updateCurrentUser({ weight_unit: unit });
+      if (navigator.vibrate) navigator.vibrate(10);
+    } catch (error) {
+      console.error('Failed to update weight unit:', error);
+    } finally {
+      setSavingUnit(false);
+    }
   };
 
   return (
@@ -91,6 +108,43 @@ export default function Settings() {
           <p className="text-sm text-muted">
             Member since {new Date(currentUser?.created_at).toLocaleDateString()}
           </p>
+        </div>
+
+        {/* Preferences */}
+        <div className="glass-subtle p-4 mb-5">
+          <div className="flex items-center gap-2 mb-3">
+            <SettingsIcon size={18} className="text-accent" />
+            <h4 className="font-semibold">Preferences</h4>
+          </div>
+          <div className="space-y-3">
+            <div>
+              <label className="text-sm text-muted mb-2 block">Weight Unit</label>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => handleWeightUnitChange('kg')}
+                  disabled={savingUnit}
+                  className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-all ${
+                    weightUnit === 'kg'
+                      ? 'bg-accent text-white'
+                      : 'bg-white/5 text-muted'
+                  }`}
+                >
+                  Kilograms (kg)
+                </button>
+                <button
+                  onClick={() => handleWeightUnitChange('lb')}
+                  disabled={savingUnit}
+                  className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-all ${
+                    weightUnit === 'lb'
+                      ? 'bg-accent text-white'
+                      : 'bg-white/5 text-muted'
+                  }`}
+                >
+                  Pounds (lb)
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Quick Actions */}
@@ -169,13 +223,13 @@ export default function Settings() {
               <h3 className="font-semibold text-lg mb-4">Log Body Weight</h3>
               <form onSubmit={handleAddWeight}>
                 <div className="mb-4">
-                  <label>Weight (kg)</label>
+                  <label>Weight ({weightUnit})</label>
                   <input
                     type="number"
                     step="0.1"
                     value={newWeight}
                     onChange={(e) => setNewWeight(e.target.value)}
-                    placeholder="e.g., 75.5"
+                    placeholder={weightUnit === 'kg' ? 'e.g., 75.5' : 'e.g., 165.0'}
                     autoFocus
                   />
                 </div>

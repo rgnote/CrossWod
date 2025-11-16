@@ -14,10 +14,12 @@ class UserCreate(UserBase):
 
 class UserUpdate(BaseModel):
     name: Optional[str] = Field(None, min_length=1, max_length=100)
+    weight_unit: Optional[str] = Field(None, pattern="^(kg|lb)$")
 
 
 class UserResponse(UserBase):
     id: int
+    weight_unit: str = "kg"
     created_at: datetime
     last_active: datetime
     has_profile_picture: bool = False
@@ -59,6 +61,7 @@ class WorkoutSetBase(BaseModel):
     is_warmup: bool = False
     is_dropset: bool = False
     is_failure: bool = False
+    is_completed: bool = False
     rpe: Optional[float] = Field(None, ge=1, le=10)
     rest_seconds: Optional[int] = None
     notes: Optional[str] = None
@@ -76,6 +79,7 @@ class WorkoutSetUpdate(BaseModel):
     is_warmup: Optional[bool] = None
     is_dropset: Optional[bool] = None
     is_failure: Optional[bool] = None
+    is_completed: Optional[bool] = None
     rpe: Optional[float] = Field(None, ge=1, le=10)
     rest_seconds: Optional[int] = None
     notes: Optional[str] = None
@@ -94,6 +98,7 @@ class WorkoutSetResponse(WorkoutSetBase):
 class WorkoutExerciseBase(BaseModel):
     exercise_id: int
     order: int
+    phase: str = "main"  # warmup, main, cooldown
     notes: Optional[str] = None
 
 
