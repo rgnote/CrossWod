@@ -27,6 +27,7 @@ export default function Workout() {
   const [isResting, setIsResting] = useState(false);
   const [workoutDuration, setWorkoutDuration] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [showStartScreen, setShowStartScreen] = useState(false);
 
   const timerRef = useRef(null);
   const durationRef = useRef(null);
@@ -37,7 +38,9 @@ export default function Workout() {
     if (workoutId) {
       loadWorkout(workoutId);
     } else {
-      startNewWorkout();
+      // Show start screen instead of auto-creating workout
+      setShowStartScreen(true);
+      setLoading(false);
     }
 
     return () => {
@@ -70,6 +73,7 @@ export default function Workout() {
   };
 
   const startNewWorkout = async () => {
+    setLoading(true);
     try {
       const newWorkout = await createWorkout(currentUser.id, {
         started_at: new Date().toISOString(),
@@ -78,6 +82,7 @@ export default function Workout() {
       setWorkout(newWorkout);
       startTimeRef.current = new Date();
       startDurationTimer();
+      setShowStartScreen(false);
       navigate(`/workout/${newWorkout.id}`, { replace: true });
     } catch (error) {
       console.error('Failed to create workout:', error);
@@ -209,6 +214,30 @@ export default function Workout() {
     return (
       <div className="p-5 flex items-center justify-center h-full">
         <p className="text-muted">Loading workout...</p>
+      </div>
+    );
+  }
+
+  // Show start workout screen
+  if (showStartScreen) {
+    return (
+      <div className="p-5 flex flex-col items-center justify-center h-full">
+        <div className="text-center max-w-sm">
+          <div className="glass-subtle p-8 mb-6">
+            <Dumbbell size={64} className="mx-auto mb-4 text-accent" />
+            <h2 className="text-2xl font-bold mb-2">Ready to Train?</h2>
+            <p className="text-muted mb-6">
+              Start a new workout session to track your exercises, sets, and progress.
+            </p>
+            <button
+              onClick={startNewWorkout}
+              className="btn btn-primary w-full py-3 text-lg"
+            >
+              <Plus size={24} />
+              Start Workout
+            </button>
+          </div>
+        </div>
       </div>
     );
   }

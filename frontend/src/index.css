@@ -283,6 +283,9 @@ label {
 .w-full { width: 100%; }
 .h-full { height: 100%; }
 
+.max-w-sm { max-width: 24rem; }
+.max-w-lg { max-width: 32rem; }
+
 .overflow-y-auto {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -290,6 +293,185 @@ label {
 
 .overflow-hidden {
   overflow: hidden;
+}
+
+/* Grid */
+.grid {
+  display: grid;
+}
+
+.grid-cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.grid-cols-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.grid-cols-7 {
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+/* Flex utilities */
+.flex-1 {
+  flex: 1 1 0%;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+/* Spacing */
+.space-y-2 > * + * {
+  margin-top: 8px;
+}
+
+.space-y-3 > * + * {
+  margin-top: 12px;
+}
+
+.space-y-4 > * + * {
+  margin-top: 16px;
+}
+
+/* Position */
+.fixed {
+  position: fixed;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.relative {
+  position: relative;
+}
+
+.inset-0 {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.bottom-0 {
+  bottom: 0;
+}
+
+.left-0 {
+  left: 0;
+}
+
+.right-0 {
+  right: 0;
+}
+
+.z-50 {
+  z-index: 50;
+}
+
+/* Sizing */
+.py-1 { padding-top: 4px; padding-bottom: 4px; }
+.py-2 { padding-top: 8px; padding-bottom: 8px; }
+.py-3 { padding-top: 12px; padding-bottom: 12px; }
+
+.px-2 { padding-left: 8px; padding-right: 8px; }
+.px-3 { padding-left: 12px; padding-right: 12px; }
+
+.pt-3 { padding-top: 12px; }
+.pb-20 { padding-bottom: 80px; }
+
+.mt-1 { margin-top: 4px; }
+.mt-2 { margin-top: 8px; }
+.mt-3 { margin-top: 12px; }
+
+.mb-6 { margin-bottom: 24px; }
+
+.mx-auto { margin-left: auto; margin-right: auto; }
+
+/* Border */
+.border-t {
+  border-top-width: 1px;
+  border-top-style: solid;
+}
+
+.border-b {
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+}
+
+.border-white\/10 {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.rounded-lg {
+  border-radius: 8px;
+}
+
+.rounded-full {
+  border-radius: 9999px;
+}
+
+/* Background opacity variants */
+.bg-white\/5 {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.bg-white\/10 {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.bg-accent {
+  background-color: var(--accent);
+}
+
+.bg-success\/20 {
+  background-color: rgba(48, 209, 88, 0.2);
+}
+
+/* Text utilities */
+.text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.text-white {
+  color: white;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+/* Transitions */
+.transition-all {
+  transition: all 0.2s ease;
+}
+
+/* Transforms */
+.scale-\[1\.01\]:hover {
+  transform: scale(1.01);
+}
+
+.scale-\[0\.99\]:active {
+  transform: scale(0.99);
+}
+
+/* Items alignment */
+.items-start {
+  align-items: flex-start;
+}
+
+.items-end {
+  align-items: flex-end;
+}
+
+.justify-start {
+  justify-content: flex-start;
 }
 
 /* Scrollbar */

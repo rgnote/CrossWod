@@ -14,11 +14,11 @@ export default function Layout() {
 
   return (
     <div className="flex flex-col h-full overflow-hidden">
-      <main className="flex-1 overflow-y-auto safe-top">
+      <main className="flex-1 overflow-y-auto safe-top pb-20">
         <Outlet />
       </main>
 
-      <nav className="glass safe-bottom" style={{
+      <nav className="glass safe-bottom fixed bottom-0 left-0 right-0" style={{
         borderRadius: '24px 24px 0 0',
         borderBottom: 'none',
         padding: '12px 20px',
@@ -33,7 +33,7 @@ export default function Layout() {
               <NavLink
                 key={path}
                 to={path}
-                className="flex flex-col items-center gap-1"
+                className="flex flex-col items-center"
                 style={{ minWidth: '60px' }}
               >
                 <div
@@ -49,13 +49,6 @@ export default function Layout() {
                 >
                   <Icon size={22} strokeWidth={isActive ? 2.5 : 2} />
                 </div>
-                <span
-                  className={`text-xs font-medium ${
-                    isActive ? 'text-accent' : 'text-muted'
-                  }`}
-                >
-                  {label}
-                </span>
               </NavLink>
             );
           })}
