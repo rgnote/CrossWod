@@ -69,7 +69,7 @@ def get_weekly_summary(
 def get_exercise_progress(
     user_id: int = Query(...),
     exercise_id: int = Query(...),
-    metric_type: str = Query("weight", regex="^(weight|volume|reps)$"),
+    metric_type: str = Query("weight", pattern="^(weight|volume|reps)$"),
     days: int = Query(90, ge=7, le=365),
     db: Session = Depends(get_db)
 ):

@@ -10,7 +10,7 @@ from models.database import (
 from schemas import (
     WorkoutCreate, WorkoutUpdate, WorkoutResponse, WorkoutSummary,
     WorkoutExerciseCreate, WorkoutSetCreate, WorkoutSetUpdate,
-    PersonalRecordResponse
+    WorkoutSetResponse, PersonalRecordResponse
 )
 
 router = APIRouter()
@@ -280,7 +280,7 @@ def add_exercise_to_workout(
 
 
 # Set management
-@router.post("/exercises/{workout_exercise_id}/sets")
+@router.post("/exercises/{workout_exercise_id}/sets", response_model=WorkoutSetResponse)
 def add_set(
     workout_exercise_id: int,
     set_data: WorkoutSetCreate,
@@ -321,7 +321,7 @@ def add_set(
     return db_set
 
 
-@router.put("/sets/{set_id}")
+@router.put("/sets/{set_id}", response_model=WorkoutSetResponse)
 def update_set(
     set_id: int,
     set_update: WorkoutSetUpdate,
