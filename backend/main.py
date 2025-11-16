@@ -7,12 +7,14 @@ from database import engine, Base
 from models.database import *  # Import all models to register them
 from routers import users, exercises, workouts, analytics, body_metrics, templates
 from utils.seed_exercises import seed_exercises
+from utils.migrate import migrate_database
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup: Create tables and seed data
+    # Startup: Create tables, run migrations, and seed data
     Base.metadata.create_all(bind=engine)
+    migrate_database()
     seed_exercises()
     yield
     # Shutdown: cleanup if needed

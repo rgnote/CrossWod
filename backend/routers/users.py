@@ -20,6 +20,7 @@ def get_users(db: Session = Depends(get_db)):
         user_dict = {
             "id": user.id,
             "name": user.name,
+            "weight_unit": user.weight_unit or "kg",
             "created_at": user.created_at,
             "last_active": user.last_active,
             "has_profile_picture": user.profile_picture is not None
@@ -37,6 +38,7 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
     return UserResponse(
         id=db_user.id,
         name=db_user.name,
+        weight_unit=db_user.weight_unit or "kg",
         created_at=db_user.created_at,
         last_active=db_user.last_active,
         has_profile_picture=False
@@ -56,6 +58,7 @@ def get_user(user_id: int, db: Session = Depends(get_db)):
     return UserResponse(
         id=user.id,
         name=user.name,
+        weight_unit=user.weight_unit or "kg",
         created_at=user.created_at,
         last_active=user.last_active,
         has_profile_picture=user.profile_picture is not None
@@ -70,6 +73,8 @@ def update_user(user_id: int, user_update: UserUpdate, db: Session = Depends(get
 
     if user_update.name:
         user.name = user_update.name
+    if user_update.weight_unit:
+        user.weight_unit = user_update.weight_unit
 
     user.last_active = datetime.now(timezone.utc)
     db.commit()
@@ -78,6 +83,7 @@ def update_user(user_id: int, user_update: UserUpdate, db: Session = Depends(get
     return UserResponse(
         id=user.id,
         name=user.name,
+        weight_unit=user.weight_unit or "kg",
         created_at=user.created_at,
         last_active=user.last_active,
         has_profile_picture=user.profile_picture is not None
