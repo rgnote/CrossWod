@@ -52,6 +52,7 @@ htmlcov/
 # Database (keep structure, ignore actual data for git)
 # Uncomment below to track the database
 # !backend/data/crosswod.db
+backend/data/
 
 # Temporary files
 *.tmp

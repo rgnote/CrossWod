@@ -21,12 +21,16 @@ describe('Layout Component', () => {
   }
 
   it('should render navigation bar', () => {
-    renderWithRouter()
-    expect(screen.getByText('Home')).toBeInTheDocument()
-    expect(screen.getByText('Workout')).toBeInTheDocument()
-    expect(screen.getByText('History')).toBeInTheDocument()
-    expect(screen.getByText('Progress')).toBeInTheDocument()
-    expect(screen.getByText('Profile')).toBeInTheDocument()
+    const { container } = renderWithRouter()
+    const nav = container.querySelector('nav')
+    const links = nav.querySelectorAll('a')
+
+    expect(links).toHaveLength(5)
+    expect(links[0]).toHaveAttribute('href', '/')
+    expect(links[1]).toHaveAttribute('href', '/workout')
+    expect(links[2]).toHaveAttribute('href', '/history')
+    expect(links[3]).toHaveAttribute('href', '/progress')
+    expect(links[4]).toHaveAttribute('href', '/settings')
   })
 
   it('should render outlet content', () => {
@@ -35,9 +39,10 @@ describe('Layout Component', () => {
   })
 
   it('should highlight active route', () => {
-    renderWithRouter('/workout')
-    const workoutLink = screen.getByText('Workout')
-    expect(workoutLink).toHaveClass('text-accent')
+    const { container } = renderWithRouter('/workout')
+    const workoutLink = container.querySelector('a[href="/workout"]')
+    const iconContainer = workoutLink.querySelector('div')
+    expect(iconContainer).toHaveClass('text-accent')
   })
 
   it('should render workout content on /workout route', () => {
