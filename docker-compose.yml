@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    container_name: crosswod-backend
+    restart: unless-stopped
+    volumes:
+      - ./backend/data:/app/data
+    networks:
+      - crosswod-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  frontend:
+    build: ./frontend
+    container_name: crosswod-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - crosswod-network
+
+networks:
+  crosswod-network:
+    driver: bridge
