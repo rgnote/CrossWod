@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Plus, Check, Timer, Trash2, Save, X } from 'lucide-react';
+import { Plus, Check, Timer, Trash2, Save, X, Dumbbell } from 'lucide-react';
 import { useUser } from '../context/UserContext';
 import {
   createWorkout,
